@@ -1,0 +1,81 @@
+body{
+  margin: 0;
+}
+
+#root {
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* main {
+  width: 50vw;
+} */
+
+h2{
+  margin-top: 0;
+}
+
+aside{
+  position: relative;
+  width: 50vw;
+  height: 100vh;
+  max-height: calc(100vh - 2rem);
+  overflow: hidden;
+}
+
+.register{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 50vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  
+}
+
+.statistics{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40vh;
+}
+
+::-webkit-scrollbar {
+  height: auto;
+  width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  --tw-border-opacity: 1;
+  background-color: rgba(217,217,227,.8);
+  border-color: rgba(255,255,255,var(--tw-border-opacity));
+  border-radius: 9999px;
+  border-width: 1px
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 9999px;
+}
+
+button{
+  border: 0;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.start-button{
+  background-color: rgba(8, 255, 8, 0.343);
+}
+
+.stop-button{
+  background-color: rgba(255, 0, 0, 0.45);
+}
+
+
+
+
