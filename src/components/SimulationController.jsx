@@ -1,4 +1,4 @@
-export function SimulationController({setTime, setData, isRunning, setIsRunning }) {
+export function SimulationController({setTimers, setTime, setData, isRunning, setIsRunning }) {
   
   
   const handleRun = () => {
@@ -7,6 +7,7 @@ export function SimulationController({setTime, setData, isRunning, setIsRunning 
   
   
   const handleReset = () => {
+    setTimers([])
     setTime(0)
     setData([])
     setIsRunning(false)

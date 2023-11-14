@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useRef} from 'react'
 import './App.css'
 import { Simulation } from './components/Simulation'
 import { RegisterTable } from './components/RegisterTable'
@@ -9,8 +9,52 @@ function App() {
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [speedFactor, setSpeedFactor] = useState(1)
+  const [timers, setTimers] = useState([]);
 
   const timeInHours = new Date(time * 1000).toISOString().substr(11, 12)
+
+
+
+  
+  const prevDataRef = useRef();
+
+  useEffect(() => {
+    let queuePositionE1 = 0;
+    let queuePositionE2 = 0;
+    let queuePositionS1 = 0;
+    let queuePositionS2 = 0;
+  
+    const newData = data.map(car => {
+      if (car.verificationState === 'Pendiente') {
+        switch (car.lane) {
+          case 'E1':
+            return { ...car, queuePosition: ++queuePositionE1 };
+          case 'E2':
+            return { ...car, queuePosition: ++queuePositionE2 };
+          case 'S1':
+            return { ...car, queuePosition: ++queuePositionS1 };
+          case 'S2':
+            return { ...car, queuePosition: ++queuePositionS2 };
+          default:
+            return car;
+        }
+      } else {
+        // If the car is not pending, reset its queue position to 0
+        return { ...car, queuePosition: 0 };
+      }
+    });
+  
+    // Only update data if it has actually changed
+    if (JSON.stringify(newData) !== JSON.stringify(prevDataRef.current)) {
+      setData(newData);
+    }
+  
+    // Store the current data in the ref
+    prevDataRef.current = newData;
+  }, [data]);
+
+  
+
 
 
   useEffect(() => {
@@ -34,7 +78,7 @@ function App() {
     }
   
     return () => clearInterval(interval)
-  }, [isRunning, speedFactor]) 
+  }, [isRunning, speedFactor])
   
   
   function createEvent(currentTime){
@@ -60,6 +104,8 @@ function App() {
       <main>
         {timeInHours}
         <SimulationController
+          setTimers={setTimers}
+          speedFactor={speedFactor}
           setTime={setTime}
           setData={setData}
           isRunning={isRunning}
@@ -68,6 +114,8 @@ function App() {
       </main>
       <aside>
         <RegisterTable
+        timers={timers}
+        setTimers={setTimers}
         data = {data}
         setData={setData}
         isRunning={isRunning}
