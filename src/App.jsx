@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef} from 'react'
 import './App.css'
-import { Simulation } from './components/Simulation'
 import { RegisterTable } from './components/RegisterTable'
 import { SimulationController } from './components/SimulationController'
+import { SimulationAnimation } from './components/SimulationAnimation'
 
 function App() {
   const [data, setData] = useState([])
@@ -13,9 +13,6 @@ function App() {
 
   const timeInHours = new Date(time * 1000).toISOString().substr(11, 12)
 
-
-
-  
   const prevDataRef = useRef();
 
   useEffect(() => {
@@ -67,7 +64,7 @@ function App() {
         const elapsed = (now - start) / 1000 * speedFactor // Multiply by speedFactor
         setTime((prevTime) => {
           const newTime = prevTime + elapsed;
-          if(Math.random() < 0.001){
+          if(Math.random() < 0.004){
             const dataRow = createEvent(newTime)
             setData((prevData) => [...prevData, dataRow])
           }
@@ -80,9 +77,11 @@ function App() {
     return () => clearInterval(interval)
   }, [isRunning, speedFactor])
   
+  const lanes = ['E1', 'E2', 'S1', 'S2']
   
   function createEvent(currentTime){
-    const lane = Math.random() < 0.5 ? 'E1' : 'E2'
+    const laneIndex = Math.floor(Math.random() * 4)
+    const lane = lanes[laneIndex]
     const processTime = ((Math.random() * 10000) / 1000) + 1
     const queuePosition = 0
     const arrivalTime = new Date(currentTime * 1000).toISOString().substr(11, 12)
@@ -102,7 +101,10 @@ function App() {
   return (
     <>
       <main>
-        {timeInHours}
+        <h2>{timeInHours}</h2>
+        <SimulationAnimation
+          data={data}
+        />
         <SimulationController
           setTimers={setTimers}
           speedFactor={speedFactor}
