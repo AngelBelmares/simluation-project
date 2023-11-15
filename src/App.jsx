@@ -51,9 +51,6 @@ function App() {
   }, [data]);
 
   
-
-
-
   useEffect(() => {
     let interval
   

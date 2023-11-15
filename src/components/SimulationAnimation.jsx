@@ -6,13 +6,13 @@ export function SimulationAnimation({ data }) {
 
   useEffect(() => {
     const acceptedCarElements = document.querySelectorAll('.car-accepted-entry, .car-accepted-exit');
-    setTimeout(() => {
+
       acceptedCarElements.forEach((element) => {
         if (element) {
           element.classList.add('fade-out');
         }
       });
-    }, 1000);
+  
 
   }, [data]);
 
@@ -39,8 +39,12 @@ export function SimulationAnimation({ data }) {
           const carPendingEntries = document.querySelectorAll('.car-accepted-entry.fade-out, .car-accepted-exit.fade-out');
           carPendingEntries.forEach((car) => {
             setTimeout(() => {
-              car.remove();
-            }, 5000);
+              try {
+                car.remove();
+              } catch (error) {
+                console.log(error);
+              }
+            }, 4000);
           });
         }
       }

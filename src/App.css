@@ -125,9 +125,9 @@ button{
 .road {
   display: flex;
   flex-direction: row-reverse;
-  justify-content: flex-end; /* Alinea los elementos a la derecha */
+  justify-content: flex-end;
   align-items: center;
-  outline: #f00 solid 1px;
+  outline: rgb(0, 0, 0) solid 1px;
   height: 60px;
   width: 100%;
   background-color: rgba(173, 173, 173, 0.068);
@@ -178,7 +178,7 @@ button{
   position: absolute;
   right: 40%;
   background-color: rgba(8, 255, 8, 0.343);
-  animation: moveToRight 5s linear forwards;
+  animation: moveToRight 4s ease-in;
 }
 
 .road-name {
@@ -189,7 +189,7 @@ button{
 
 .car-accepted-entry.fade-out {
   opacity: 0;
-  transition: opacity 5s ease-out;
+  transition: opacity 4s ease-in;
 }
 
 @keyframes moveToRight {
@@ -262,12 +262,12 @@ button{
   position: absolute;
   left: 40%;
   background-color: rgba(8, 255, 8, 0.343);
-  animation: moveToleft 5s linear forwards;
+  animation: moveToleft 4s ease-in;
 }
 
 
 .car-accepted-exit.fade-out {
   opacity: 0;
-  transition: opacity 5s ease-out;
+  transition: opacity 4s ease-out;
 }
 
