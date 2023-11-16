@@ -101,6 +101,7 @@ function App() {
         <h2>{timeInHours}</h2>
         <SimulationAnimation
           data={data}
+          isRunning={isRunning}
         />
         <SimulationController
           setTimers={setTimers}

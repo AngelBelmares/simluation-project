@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 
 export function SimulationAnimation({ data }) {
@@ -12,7 +12,6 @@ export function SimulationAnimation({ data }) {
           element.classList.add('fade-out');
         }
       });
-  
 
   }, [data]);
 
@@ -32,28 +31,6 @@ export function SimulationAnimation({ data }) {
     }
   }
 
-  useEffect(() => {
-    const observer = new MutationObserver((mutationsList, observer) => {
-      for(let mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-          const carPendingEntries = document.querySelectorAll('.car-accepted-entry.fade-out, .car-accepted-exit.fade-out');
-          carPendingEntries.forEach((car) => {
-            setTimeout(() => {
-              try {
-                car.remove();
-              } catch (error) {
-                console.log(error);
-              }
-            }, 4000);
-          });
-        }
-      }
-    });
-  
-    observer.observe(document.body, { childList: true, subtree: true });
-  
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <>
