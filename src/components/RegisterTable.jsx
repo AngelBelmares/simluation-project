@@ -5,6 +5,7 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
   const isRunningRef = useRef(isRunning);
   const timersRef = useRef(timers);
   const intervals = useRef([]);
+  const probRechazo = 42 / 5322
 
   // reset all when data === []
   useEffect(() => {
@@ -17,9 +18,13 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
 
   useEffect(() => {
     data.forEach((car, index) => {
-      if (timers[index] >= car.processTime && car.verificationState !== 'Aceptado') {
+      if (timers[index] >= car.processTime && car.verificationState === 'Pendiente') {
         const newData = [...data];
+        if(Math.random() < probRechazo) {
+          newData[index].verificationState = 'Rechazado';
+        } else {
         newData[index].verificationState = 'Aceptado';
+        }
         setData(newData);
       }
     });
@@ -75,45 +80,45 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
   }, []);
 
 
-  const totalAcceptedE1 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'E1').length
-  const totalRejectedE1 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'E1').length
-  const totalQrE1 = data.filter((data) => data.lane === 'E1' && data.verificationType === 'Qr').length
-  const totalCardE1 = data.filter((data) => data.lane === 'E1' && data.verificationType === 'Tarjeta').length
-  const averageTimeQrE1 = data.filter((data) => data.verificationType === 'Qr' && data.lane === 'E1').reduce((acc, data) => acc + data.processTime, 0) / totalQrE1 || 0
-  const averageTimeCardE1 = data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'E1').reduce((acc, data) => acc + data.processTime, 0) / totalCardE1 || 0
+  const AcceptedCarsE1 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'E1').length
+  const RejectedCarsE1 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'E1').length
+  const verifQrE1 = data.filter((data) => data.lane === 'E1' && data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').length
+  const verifCardE1 = data.filter((data) => data.lane === 'E1' && data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').length
+  const averageTimeQrE1 = verifQrE1 !== 0 ? data.filter((data) => data.verificationType === 'Qr' && data.lane === 'E1' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifQrE1 : 0
+  const averageTimeCardE1 = verifCardE1 !== 0 ? data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'E1' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifCardE1 : 0
 
-  const totalAcceptedE2 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'E2').length
-  const totalRejectedE2 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'E2').length
-  const totalQrE2 = data.filter((data) => data.lane === 'E2' && data.verificationType === 'Qr').length
-  const totalCardE2 = data.filter((data) => data.lane === 'E2' && data.verificationType === 'Tarjeta').length
-  const averageTimeQrE2 = data.filter((data) => data.verificationType === 'Qr' && data.lane === 'E2').reduce((acc, data) => acc + data.processTime, 0) / totalQrE2 || 0
-  const averageTimeCardE2 = data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'E2').reduce((acc, data) => acc + data.processTime, 0) / totalCardE2 || 0
+  const AcceptedCarsE2 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'E2').length
+  const RejectedCarsE2 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'E2').length
+  const verifQrE2 = data.filter((data) => data.lane === 'E2' && data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').length
+  const verifCardE2 = data.filter((data) => data.lane === 'E2' && data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').length
+  const averageTimeQrE2 = verifQrE2 !== 0 ? data.filter((data) => data.verificationType === 'Qr' && data.lane === 'E2' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifQrE2 : 0
+  const averageTimeCardE2 = verifCardE2 !== 0 ? data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'E2' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifCardE2 : 0
 
-  const totalAcceptedS1 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'S1').length
-  const totalRejectedS1 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'S1').length
-  const totalQrS1 = data.filter((data) => data.lane === 'S1' && data.verificationType === 'Qr').length
-  const totalCardS1 = data.filter((data) => data.lane === 'S1' && data.verificationType === 'Tarjeta').length
-  const averageTimeQrS1 = data.filter((data) => data.verificationType === 'Qr' && data.lane === 'S1').reduce((acc, data) => acc + data.processTime, 0) / totalQrS1 || 0
-  const averageTimeCardS1 = data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'S1').reduce((acc, data) => acc + data.processTime, 0) / totalCardS1 || 0
+  const AcceptedCarsS1 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'S1').length
+  const RejectedCarsS1 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'S1').length
+  const verifQrS1 = data.filter((data) => data.lane === 'S1' && data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').length
+  const verifCardS1 = data.filter((data) => data.lane === 'S1' && data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').length
+  const averageTimeQrS1 = verifQrS1 !== 0 ? data.filter((data) => data.verificationType === 'Qr' && data.lane === 'S1' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifQrS1 : 0
+  const averageTimeCardS1 = verifCardS1 !== 0 ? data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'S1' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifCardS1 : 0
 
-  const totalAcceptedS2 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'S2').length
-  const totalRejectedS2 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'S2').length
-  const totalQrS2 = data.filter((data) => data.lane === 'S2' && data.verificationType === 'Qr').length
-  const totalCardS2 = data.filter((data) => data.lane === 'S2' && data.verificationType === 'Tarjeta').length
-  const averageTimeQrS2 = data.filter((data) => data.verificationType === 'Qr' && data.lane === 'S2').reduce((acc, data) => acc + data.processTime, 0) / totalQrS2 || 0
-  const averageTimeCardS2 = data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'S2').reduce((acc, data) => acc + data.processTime, 0) / totalCardS2 || 0
+  const AcceptedCarsS2 = data.filter((data) => data.verificationState === 'Aceptado' && data.lane === 'S2').length
+  const RejectedCarsS2 = data.filter((data) => data.verificationState === 'Rechazado' && data.lane === 'S2').length
+  const verifQrS2 = data.filter((data) => data.lane === 'S2' && data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').length
+  const verifCardS2 = data.filter((data) => data.lane === 'S2' && data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').length
+  const averageTimeQrS2 = verifQrS2 !== 0 ? data.filter((data) => data.verificationType === 'Qr' && data.lane === 'S2' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifQrS2 : 0
+  const averageTimeCardS2 = verifCardS2 !== 0 ? data.filter((data) => data.verificationType === 'Tarjeta' && data.lane === 'S2' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) / verifCardS2 : 0
 
-  const totalAccepted = totalAcceptedE1 + totalAcceptedE2 + totalAcceptedS1 + totalAcceptedS2
-  const totalRejected = totalRejectedE1 + totalRejectedE2 + totalRejectedS1 + totalRejectedS2
+  const totalAccepted = AcceptedCarsE1 + AcceptedCarsE2 + AcceptedCarsS1 + AcceptedCarsS2
+  const totalRejected = RejectedCarsE1 + RejectedCarsE2 + RejectedCarsS1 + RejectedCarsS2
 
-  const totalCarsQr = data.filter((data) => data.verificationType === 'Qr').length || 0
-  const totalCarsCard = data.filter((data) => data.verificationType === 'Tarjeta').length || 0
+  const totalVerifQr = data.filter((data) => data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').length || 0
+  const totalVerifCard = data.filter((data) => data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').length || 0
 
-  const totalTimeQr = data.filter((data) => data.verificationType === 'Qr').reduce((acc, data) => acc + data.processTime, 0) || 0
-  const totalTimeCard = data.filter((data) => data.verificationType === 'Tarjeta').reduce((acc, data) => acc + data.processTime, 0) || 0
+  const totalTimeQr = data.filter((data) => data.verificationType === 'Qr' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) || 0
+  const totalTimeCard = data.filter((data) => data.verificationType === 'Tarjeta' && data.verificationState !== 'Pendiente').reduce((acc, data) => acc + data.processTime, 0) || 0
   
-  const averageTimeQr = totalTimeQr / totalCarsQr || 0
-  const averageTimeCard = totalTimeCard / totalCarsCard || 0
+  const averageTimeQr = totalVerifQr > 0 ? totalTimeQr / totalVerifQr : 0
+  const averageTimeCard = totalVerifCard > 0 ? totalTimeCard / totalVerifCard : 0
 
   return (
     <>
@@ -143,7 +148,7 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
                 <td>{data.queuePosition}</td>
                 <td>{`${(typeof timers[index] === 'number' ? timers[index].toFixed(3) : 0)}`}</td>
                 <td>{data.verificationType}</td>
-                <td className={data.verificationState === 'Aceptado' ? 'Accepted' : (data.queuePosition === 1) ? 'Proccesing' : 'Pending'}>{data.queuePosition === 1 ? 'Procesando' : data.verificationState}</td>
+                <td className={data.verificationState === 'Aceptado' ? 'Accepted' : (data.queuePosition === 1) ? 'Proccesing' : (data.verificationState === 'Rechazado') ? 'Rejected' : 'Pending'}>{data.queuePosition === 1 ? 'Procesando' : data.verificationState}</td>
               </tr>
             );
           })}
@@ -159,8 +164,10 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
         <thead>
           <tr>
             <th>Linea</th>
-            <th>Total aceptados</th>
-            <th>Total rechazados</th>
+            <th>Autos aceptados</th>
+            <th>Autos rechazados</th>
+            <th>Verificaciones con tarjeta</th>
+            <th>Verificaciones con QR</th>
             <th>Tiempo promedio verificación QR</th>
             <th>Tiempo promedio verificación Tarjeta</th>
           </tr>
@@ -168,29 +175,37 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
         <tbody>
           <tr>
             <td>E1</td>
-            <td>{totalAcceptedE1}</td>
-            <td>{totalRejectedE1}</td>
+            <td>{AcceptedCarsE1}</td>
+            <td>{RejectedCarsE1}</td>
+            <td>{verifCardE1}</td>
+            <td>{verifQrE1}</td>
             <td>{averageTimeQrE1.toFixed(3)}</td>
             <td>{averageTimeCardE1.toFixed(3)}</td>
           </tr>
           <tr>
             <td>E2</td>
-            <td>{totalAcceptedE2}</td>
-            <td>{totalRejectedE2}</td>
+            <td>{AcceptedCarsE2}</td>
+            <td>{RejectedCarsE2}</td>
+            <td>{verifCardE2}</td>
+            <td>{verifQrE2}</td>
             <td>{averageTimeQrE2.toFixed(3)}</td>
             <td>{averageTimeCardE2.toFixed(3)}</td>
           </tr>
           <tr>
             <td>S1</td>
-            <td>{totalAcceptedS1}</td>
-            <td>{totalRejectedS1}</td>
+            <td>{AcceptedCarsS1}</td>
+            <td>{RejectedCarsS1}</td>
+            <td>{verifCardS1}</td>
+            <td>{verifQrS1}</td>
             <td>{averageTimeQrS1.toFixed(3)}</td>
             <td>{averageTimeCardS1.toFixed(3)}</td>
           </tr>
           <tr>
             <td>S2</td>
-            <td>{totalAcceptedS2}</td>
-            <td>{totalRejectedS2}</td>
+            <td>{AcceptedCarsS2}</td>
+            <td>{RejectedCarsS2}</td>
+            <td>{verifCardS2}</td>
+            <td>{verifQrS2}</td>
             <td>{averageTimeQrS2.toFixed(3)}</td>
             <td>{averageTimeCardS2.toFixed(3)}</td>
           </tr>
@@ -198,6 +213,8 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
           <td>Total</td>
           <td>{totalAccepted}</td>
           <td>{totalRejected}</td>
+          <td>{totalVerifCard}</td>
+          <td>{totalVerifQr}</td>
           <td>{averageTimeQr.toFixed(3)}</td>
           <td>{averageTimeCard.toFixed(3)}</td>
         </tr>

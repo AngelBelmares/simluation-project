@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 
 export function SimulationAnimation({ data }) {
   const roads = ['E1', 'E2', 'S1', 'S2']
 
   useEffect(() => {
-    const acceptedCarElements = document.querySelectorAll('.car-accepted-entry, .car-accepted-exit');
+    const acceptedCarElements = document.querySelectorAll('.car-accepted-entry, .car-accepted-exit, .car-rejected-entry, .car-rejected-exit');
 
       acceptedCarElements.forEach((element) => {
         if (element) {
@@ -20,12 +20,16 @@ export function SimulationAnimation({ data }) {
       return 'car-accepted-entry';
     } else if ((car.lane === 'E1' || car.lane === 'E2') && car.queuePosition === 1) {
       return 'car-proccesing-entry';
+    } else if ((car.lane === 'E1' || car.lane === 'E2') && car.verificationState === 'Rechazado') {
+      return 'car-rejected-entry';
     } else if (car.lane === 'E1' || car.lane === 'E2') {
       return 'car-pending-entry';
     } else if (car.verificationState === 'Aceptado') {
       return 'car-accepted-exit';
     } else if (car.queuePosition === 1) {
       return 'car-proccesing-exit';
+    } else if (car.verificationState === 'Rechazado') {
+      return 'car-rejected-exit';
     } else {
       return 'car-pending-exit';
     }

@@ -10,7 +10,7 @@ function App() {
   const [isRunning, setIsRunning] = useState(false)
   const [speedFactor, setSpeedFactor] = useState(1)
   const [timers, setTimers] = useState([]);
-
+  
   const timeInHours = new Date(time * 1000).toISOString().substr(11, 12)
 
   const prevDataRef = useRef();
@@ -101,10 +101,10 @@ function App() {
         <h2>{timeInHours}</h2>
         <SimulationAnimation
           data={data}
-          isRunning={isRunning}
         />
         <SimulationController
           setTimers={setTimers}
+          setSpeedFactor={setSpeedFactor}
           speedFactor={speedFactor}
           setTime={setTime}
           setData={setData}

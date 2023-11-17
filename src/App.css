@@ -20,7 +20,10 @@ h2{
 
 aside{
   position: relative;
-  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 55vw;
   height: 100vh;
   max-height: calc(100vh - 2rem);
   overflow: hidden;
@@ -31,7 +34,6 @@ main + aside{
 }
 
 .register{
-  position: absolute;
   top: 0;
   width: 100%;
   max-height: 55vh;
@@ -51,13 +53,21 @@ main + aside{
 }
 
 .statistics{
-  position: absolute;
   bottom: 1rem;
   width: 100%;
   height: 30vh;
   padding: 1rem;
-  display: flex;
-  flex-grow: 1;
+  display: flex;  
+}
+
+.statistics-table{
+  width: 100%;
+  margin: 0 1rem 1rem;
+}
+
+.statistics h2{
+  margin: 0;
+  margin: 0 1rem, 1rem;
 }
 
 
@@ -107,7 +117,10 @@ button{
 
 .register-table .Pending{
   background-color: rgba(255, 255, 255, 0.45);
-  
+}
+
+.register-table .Rejected{
+  background-color: rgba(255, 0, 0, 0.45);
 }
 
 
@@ -133,12 +146,18 @@ button{
   background-color: rgba(173, 173, 173, 0.068);
 }
 
+.roads-container + .simulation-buttons {
+  margin-top: 1rem;
+}
+
 .car-pending-entry,
 .car-proccesing-entry,
 .car-accepted-entry,
 .car-pending-exit,
 .car-proccesing-exit,
-.car-accepted-exit {
+.car-accepted-exit, 
+.car-rejected-entry,
+.car-rejected-exit {
   width: 50px;
   height: 30px;
   margin: 0 5px;
@@ -190,6 +209,14 @@ button{
 .car-accepted-entry.fade-out {
   opacity: 0;
   transition: opacity 4s ease-in;
+}
+
+.car-rejected-entry {
+  position: absolute;
+  right: 40%;
+  background-color: rgba(255, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 2s ease-in;
 }
 
 @keyframes moveToRight {
@@ -265,9 +292,56 @@ button{
   animation: moveToleft 4s ease-in;
 }
 
-
 .car-accepted-exit.fade-out {
   opacity: 0;
   transition: opacity 4s ease-out;
+}
+
+.car-rejected-exit {
+  position: absolute;
+  left: 40%;
+  background-color: rgba(255, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 2s ease-in;
+}
+
+.sb-speedFactor{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+input[type=range]{
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 300px;
+  height: 5px;
+  background: #ddd;
+  border: none;
+  border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: rgb(140, 140, 140);
+  margin-top: -5px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
 }
 
