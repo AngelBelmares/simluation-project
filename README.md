@@ -54,7 +54,7 @@ Follow these instructions to set up and run the simulation on your local machine
 1. Start the development server.
 
     ```bash
-    npm run rev
+    npm run dev
 ㅤ
 ㅤ
 ㅤㅤ
