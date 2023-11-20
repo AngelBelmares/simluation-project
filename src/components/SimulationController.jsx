@@ -5,6 +5,7 @@ export function SimulationController({setTimers, setTime, setData, isRunning, se
   const hadleSpeedFactor = (e) => {
     const newSpeedFactor = e.target.value;
     setSpeedFactor(newSpeedFactor);
+    setIsRunning(false);
   }
 
   useEffect(() => {

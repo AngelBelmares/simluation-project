@@ -45,16 +45,26 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
         }
   
         const interval = setInterval(() => {
+          const now = performance.now();
+          const elapsed = (now - startTimes.current[index]) / 1000 * speedFactor;
+          const currentTime = timersRef.current[index] !== undefined ? timersRef.current[index] : 0;
+          const newTime = currentTime + elapsed;
+
+          if(isNaN(newTime)) {
+            clearInterval(intervals.current[index]);
+            return;
+          }
+  
           if (!isRunningRef.current) {
+            // Store the elapsed time when stopping the simulation
+            timersRef.current[index] = newTime;
+            // Reset the start time when stopping the simulation
+            startTimes.current[index] = null;
             clearInterval(intervals.current[index]);
             intervals.current[index] = null;
             return;
           }
   
-          const now = performance.now();
-          const elapsed = (now - startTimes.current[index]) / 1000 * speedFactor;
-          const currentTime = timersRef.current[index] !== undefined ? timersRef.current[index] : 0;
-          const newTime = currentTime + elapsed;
           if (newTime >= car.processTime) {
             clearInterval(intervals.current[index]);
             setTimers((prevTimers) => {
@@ -144,7 +154,7 @@ export function RegisterTable({timers, setTimers, setData, data, isRunning, spee
               <tr className="rt-body-row" key={index}>
                 <td>{index + 1}</td>
                 <td>{data.lane}</td>
-                <td>{data.arrivalTime}</td>
+                <td>{new Date(data.arrivalTime * 1000).toISOString().substr(11, 12)}</td>
                 <td>{data.queuePosition}</td>
                 <td>{`${(typeof timers[index] === 'number' ? timers[index].toFixed(3) : 0)}`}</td>
                 <td>{data.verificationType}</td>

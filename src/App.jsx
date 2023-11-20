@@ -5,11 +5,31 @@ import { SimulationController } from './components/SimulationController'
 import { SimulationAnimation } from './components/SimulationAnimation'
 
 function App() {
+  const [fetchData, setFetchData] = useState([])
+  const API_URL = 'http://localhost:5000'
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        setFetchData(data)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+
   const [data, setData] = useState([])
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [speedFactor, setSpeedFactor] = useState(1)
   const [timers, setTimers] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    if(data.length === 0){
+      setCurrentIndex(0)
+    }
+  }, [isRunning]);
   
   const timeInHours = new Date(time * 1000).toISOString().substr(11, 12)
 
@@ -41,12 +61,10 @@ function App() {
       }
     });
   
-    // Only update data if it has actually changed
     if (JSON.stringify(newData) !== JSON.stringify(prevDataRef.current)) {
       setData(newData);
     }
   
-    // Store the current data in the ref
     prevDataRef.current = newData;
   }, [data]);
 
@@ -55,38 +73,24 @@ function App() {
     let interval
   
     if (isRunning) {
-      let start = performance.now()
+      const originalStart = performance.now();
       interval = setInterval(() => {
-        const now = performance.now()
-        const elapsed = (now - start) / 1000 * speedFactor // Multiply by speedFactor
+        const now = performance.now();
+        const elapsed = (now - originalStart) / 1000 * speedFactor;
         setTime((prevTime) => {
           const newTime = prevTime + elapsed;
-          if(Math.random() < 0.004){
-            const dataRow = createEvent(newTime)
-            setData((prevData) => [...prevData, dataRow])
-          }
           return newTime;
-        })
-        start = now;
-      }, 1)
+        });
+        if(fetchData.length > currentIndex && fetchData[currentIndex].arrivalTime <= time){
+          setData(prevData => [...prevData, fetchData[currentIndex]]);
+          setCurrentIndex(prevIndex => prevIndex + 1);  // Increment the current index
+        }
+      }, 1);
     }
   
-    return () => clearInterval(interval)
-  }, [isRunning, speedFactor])
+    return () => clearInterval(interval);
+  }, [isRunning, speedFactor, fetchData, currentIndex, time]);
   
-  const lanes = ['E1', 'E2', 'S1', 'S2']
-  
-  function createEvent(currentTime){
-    const laneIndex = Math.floor(Math.random() * 4)
-    const lane = lanes[laneIndex]
-    const processTime = ((Math.random() * 10000) / 1000) + 1
-    const queuePosition = 0
-    const arrivalTime = new Date(currentTime * 1000).toISOString().substr(11, 12)
-    const verificationType = Math.random() < 0.5 ? 'Qr' : 'Tarjeta'
-    const verificationState = 'Pendiente'
-      
-    return {lane, arrivalTime, queuePosition, processTime, verificationType, verificationState}
-  }
 
   useEffect(() => {
     const container = document.getElementsByClassName('register')[0]
