@@ -35,7 +35,7 @@ def createDataSet():
     'verificationState': 'Pendiente'
 
   },
-  
+
   {
     'lane': 'S2',
     'arrivalTime': 1.500,
@@ -44,8 +44,8 @@ def createDataSet():
     'verificationType': 'Tarjeta',
     'verificationState': 'Pendiente'
   },
-  
-  
+
+
 ]
     return data
 
