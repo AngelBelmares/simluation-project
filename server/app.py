@@ -1,52 +1,35 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import numpy as np
 
 def createDataSet():
+    # Define the probabilities
+    lane_probs = [0.428098714, 0.114763731, 0.382916873, 0.074220683]
+    verificationType_probs = [0.810582632, 0.189417368]
+    beta = 1 / 0.053465608
 
-    # Ejemplo
-    data = [
+    # Define the categories
+    lanes = ['E1', 'E2', 'S1', 'S2']
+    verificationTypes = ['Tarjeta', 'Qr']
 
-  {
-    'lane': 'E2',
-    'arrivalTime': 0.5,
-    'queuePosition': 0,
-    'processTime': 10.445663385136658,
-    'verificationType': 'Qr',
-    'verificationState': 'Pendiente'
+    # Initialize the data
+    data = []
 
-  },
+    # Generate data until the sum reaches or exceeds 86000
+    suma_acumulada = 0
+    while suma_acumulada < 86000:
+        dato = np.random.exponential(beta)
+        suma_acumulada += dato
+        if suma_acumulada <= 86000:
+            data.append({
+                'lane': np.random.choice(lanes, p=lane_probs),
+                'arrivalTime': round(suma_acumulada, 3),
+                'queuePosition': 0,
+                'processTime': np.random.exponential(scale=1) + 3,
+                'verificationType': np.random.choice(verificationTypes, p=verificationType_probs),
+                'verificationState': 'Pendiente'
+            })
 
-  {
-    'lane': 'E2',
-    'arrivalTime': 0.633,
-    'queuePosition': 0,
-    'processTime': 10.973850955396038,
-    'verificationType': 'Qr',
-    'verificationState': 'Pendiente'
-
-  },
-
-  {
-    'lane': 'S2',
-    'arrivalTime': 1.000,
-    'queuePosition': 0,
-    'processTime': 3.8875715114826983,
-    'verificationType': 'Tarjeta',
-    'verificationState': 'Pendiente'
-
-  },
-
-  {
-    'lane': 'S2',
-    'arrivalTime': 1.500,
-    'queuePosition': 0,
-    'processTime': 3.8875715114826983,
-    'verificationType': 'Tarjeta',
-    'verificationState': 'Pendiente'
-  },
-
-
-]
     return data
 
 app = Flask(__name__)
