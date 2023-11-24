@@ -60,7 +60,7 @@ Follow these instructions to set up and run the simulation on your local machine
 5. Install Python dependencies.
 
    ```bash
-   pip install Flask Flask-CORS
+   pip install Flask flask-cors numpy
 
 ### Usage
 
